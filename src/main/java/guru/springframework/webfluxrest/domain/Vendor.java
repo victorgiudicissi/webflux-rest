@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Builder
 @Document
+@NoArgsConstructor
 @AllArgsConstructor
 public class Vendor {
 
