@@ -3,6 +3,7 @@ package guru.springframework.webfluxrest.controller;
 import guru.springframework.webfluxrest.domain.Category;
 import guru.springframework.webfluxrest.repository.CategoryRepository;
 import org.reactivestreams.Publisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,6 +29,7 @@ public class CategoryController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     Mono<Void> saveAll(@RequestBody Publisher<Category> category) {
         return categoryRepository.saveAll(category).then();
     }

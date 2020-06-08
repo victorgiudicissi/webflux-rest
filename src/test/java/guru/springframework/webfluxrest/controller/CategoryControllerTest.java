@@ -9,6 +9,7 @@ import static org.mockito.Mockito.*;
 
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
+import org.reactivestreams.Publisher;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -51,5 +52,18 @@ class CategoryControllerTest {
                 .uri("/api/v1/category/abc")
                 .exchange()
                 .expectBody(Category.class);
+    }
+
+    @Test
+    void saveAll() {
+        BDDMockito.given(categoryRepository.saveAll((Publisher<Category>) any()))
+                .willReturn(Flux.just());
+
+        webTestClient.post()
+                .uri("/api/v1/category")
+                .body(Mono.just(Category.builder().description("C!").build()), Category.class)
+                .exchange()
+                .expectStatus()
+                .isCreated();
     }
 }
