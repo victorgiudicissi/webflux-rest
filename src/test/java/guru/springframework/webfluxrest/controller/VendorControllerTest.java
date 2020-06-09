@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
+import org.reactivestreams.Publisher;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,5 +55,19 @@ class VendorControllerTest {
                 .uri("/api/v1/vendor/abc")
                 .exchange()
                 .expectBody(Vendor.class);
+    }
+
+    @Test
+    void saveAll() {
+        BDDMockito.given(vendorRepository.saveAll((Publisher<Vendor>) Mockito.any()))
+                .willReturn(Flux.just(Vendor.builder().firstName("v1").lastName("l1").build()));
+
+        webTestClient
+                .post()
+                .uri("/api/v1/vendor/abc")
+                .body(Vendor.builder().firstName("V!").lastName("L1").build(), Vendor.class)
+                .exchange()
+                .expectStatus()
+                .isCreated();
     }
 }
