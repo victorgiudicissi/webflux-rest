@@ -64,8 +64,8 @@ class VendorControllerTest {
 
         webTestClient
                 .post()
-                .uri("/api/v1/vendor/abc")
-                .body(Vendor.builder().firstName("V!").lastName("L1").build(), Vendor.class)
+                .uri("/api/v1/vendor")
+                .body(Mono.just(Vendor.builder().firstName("V!").lastName("L1").build()), Vendor.class)
                 .exchange()
                 .expectStatus()
                 .isCreated();
