@@ -33,4 +33,10 @@ public class CategoryController {
     Mono<Void> saveAll(@RequestBody Publisher<Category> category) {
         return categoryRepository.saveAll(category).then();
     }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    Mono<Category> update(@RequestBody Category category) {
+        return categoryRepository.save(category);
+    }
 }
