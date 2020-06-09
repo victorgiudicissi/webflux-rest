@@ -1,5 +1,6 @@
 package guru.springframework.webfluxrest.controller;
 
+import guru.springframework.webfluxrest.domain.Category;
 import guru.springframework.webfluxrest.domain.Vendor;
 import guru.springframework.webfluxrest.repository.VendorRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,6 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class VendorControllerTest {
@@ -69,5 +71,18 @@ class VendorControllerTest {
                 .exchange()
                 .expectStatus()
                 .isCreated();
+    }
+
+    @Test
+    void update() {
+        BDDMockito.given(vendorRepository.save(any()))
+                .willReturn(Mono.just(Vendor.builder().firstName("V1").lastName("V2").build()));
+
+        webTestClient.put()
+                .uri("/api/v1/vendor")
+                .body(Mono.just(Category.builder().description("C2").build()), Category.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
     }
 }

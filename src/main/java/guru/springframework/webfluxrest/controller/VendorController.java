@@ -1,5 +1,6 @@
 package guru.springframework.webfluxrest.controller;
 
+import guru.springframework.webfluxrest.domain.Category;
 import guru.springframework.webfluxrest.domain.Vendor;
 import guru.springframework.webfluxrest.repository.VendorRepository;
 import org.reactivestreams.Publisher;
@@ -32,5 +33,11 @@ public class VendorController {
     @ResponseStatus(HttpStatus.CREATED)
     Mono<Void> saveAll(@RequestBody Publisher<Vendor> vendor) {
         return vendorRepository.saveAll(vendor).then();
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    Mono<Vendor> update(@RequestBody Vendor vendor) {
+        return vendorRepository.save(vendor);
     }
 }
